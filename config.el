@@ -102,8 +102,13 @@
 (when (display-graphic-p)
   (require 'all-the-icons))
 
-(setq! which-key-idle-delay 0.5)
+;; Open the shortcut menu quicker
+(setq! which-key-idle-delay 0.3)
 
+;; Selecting text put it in the PRIMARY clipboard
+(setq! evil-visual-update-x-selection-p t)
+
+;; Disable mouse entirely
 ;; (use-package! disable-mouse)
 ;; (global-disable-mouse-mode t)
 ;; (mapc #'disable-mouse-in-keymap
