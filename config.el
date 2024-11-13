@@ -93,6 +93,12 @@
 
 (map! :nvm "-" 'dired-jump)
 
+;; Navigate through workspaces
+; previous ws
+(map! "M-<left>" #'+workspace/switch-left)
+; next ws
+(map! "M-<right>" #'+workspace/switch-right)
+
 (when (display-graphic-p)
   (require 'all-the-icons))
 
@@ -107,9 +113,14 @@
 ;;             evil-insert-state-map))
 
 (company-terraform-init)
+
+;;(add-to-list 'company-backends 'company-shell)
+
+;;(add-hook! 'after-init-hook #'global-flycheck-mode)
+
 ;; (setq lsp-disabled-clients '(tfls))
 
-;; before save a file hook
+;; 'before save a file' hook
 (defun before-save-hook-custom ()
   (unless (eql (with-current-buffer (current-buffer) major-mode)
                'markdown-mode)
@@ -119,11 +130,16 @@
 (defun before-save-hook-puppet ()
   (eql (with-current-buffer (current-buffer) major-mode
                             'puppet-mode)
+       (delete-trailing-whitespace)
+       (doom/delete-trailing-newlines)
        (puppet-align-block)))
 (defun before-save-hook-terraform ()
   (eql (with-current-buffer (current-buffer) major-mode
                             'terraform-mode)
+       (delete-trailing-whitespace)
+       (doom/delete-trailing-newlines)
        (terraform-format-buffer)))
+(add-hook! 'before-save-hook #'before-save-hook-custom)
 (add-hook! 'before-save-hook #'before-save-hook-custom)
 (add-hook! 'before-save-hook #'before-save-hook-puppet)
 (add-hook! 'before-save-hook #'before-save-hook-terraform)
@@ -144,6 +160,8 @@
 ;; Display workspace name in modeline
 (after! doom-modeline
   (setq! doom-modeline-persp-name t))
+
+(add-hook 'company-mode-hook 'company-box-mode)
 
 (load! "lsp-go.el")
 

@@ -57,3 +57,4 @@
 (package! dap-mode)
 (package! use-package-hydra)
 (package! hydra)
+(package! company-box)
