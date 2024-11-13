@@ -181,8 +181,8 @@
 (add-hook! 'vterm-mode-hook
   (goto-address-mode t))
 
-(load! "lsp-go.el")
+(load! "lsp/lsp-go.el")
 
 ;; TODO Debug
 ;; https://discourse.doomemacs.org/t/permanently-display-workspaces-in-the-tab-bar/4088
-;;(load! "ws.el")
+;;(load! "misc/ws.el")
