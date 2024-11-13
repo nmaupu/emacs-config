@@ -114,6 +114,17 @@
 
 (company-terraform-init)
 
+(add-hook 'company-mode-hook 'company-box-mode)
+(use-package! company-box
+  :defer t
+  :config
+  (setq-hook! 'prog-mode-hook
+    company-box-frame-top-margin 20)
+  (setq-hook! 'text-mode-hook
+    company-box-frame-top-margin 75)
+)
+
+
 ;;(add-to-list 'company-backends 'company-shell)
 
 ;;(add-hook! 'after-init-hook #'global-flycheck-mode)
@@ -161,7 +172,9 @@
 (after! doom-modeline
   (setq! doom-modeline-persp-name t))
 
-(add-hook 'company-mode-hook 'company-box-mode)
+;; Activate clickable url in vterm
+(add-hook! 'vterm-mode-hook
+  (goto-address-mode t))
 
 (load! "lsp-go.el")
 
