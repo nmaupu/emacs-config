@@ -167,11 +167,11 @@
     (when (equal (gethash "method" notification) "semgrep/rulesRefreshed")
       (lsp--info "Ignored semgrep/rulesRefreshed notification")
       t)) ;; Return t to indicate the notification is handled
-
   (advice-add 'lsp--on-notification :before-until #'ak-lsp-ignore-semgrep-rulesRefreshed))
 
-(use-package use-package-hydra
-  :ensure t)
+;(use-package use-package-hydra
+;  :defer t
+;  :ensure t)
 
 ;; Display workspace name in modeline
 (after! doom-modeline

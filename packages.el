@@ -49,12 +49,20 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
 
-(package! evil-tutor)
-(package! all-the-icons)
-(package! disable-mouse)
-(package! company-terraform)
-(package! puppet-mode)
-(package! dap-mode)
-(package! use-package-hydra)
+;; LSP related packages
+(package! company-lsp)
+(package! flycheck)
+(package! flycheck-golangci-lint)
 (package! hydra)
+(package! lsp-ui)
+(package! yasnippet)
+
+;; Misc packages
+(package! all-the-icons)
 (package! company-box)
+(package! company-terraform)
+(package! dap-mode)
+(package! disable-mouse)
+(package! evil-tutor)
+(package! puppet-mode)
+(package! use-package-hydra)
