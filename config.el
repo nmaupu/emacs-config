@@ -46,6 +46,8 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 
+(setq show-trailing-whitespace t)
+
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -108,6 +110,7 @@
 ;; Selecting text put it in the PRIMARY clipboard
 (setq! evil-visual-update-x-selection-p t)
 
+
 ;; Disable mouse entirely
 ;; (use-package! disable-mouse)
 ;; (global-disable-mouse-mode t)
@@ -119,45 +122,55 @@
 
 (company-terraform-init)
 
-(add-hook 'company-mode-hook 'company-box-mode)
-(use-package! company-box
-  :defer t
-  :config
-  (setq-hook! 'prog-mode-hook
-    company-box-frame-top-margin 20)
-  (setq-hook! 'text-mode-hook
-    company-box-frame-top-margin 75)
-)
+;;(add-hook 'company-mode-hook 'company-box-mode)
+;;(use-package! company-box
+;;  :defer t
+;;  :config
+;;  (setq-hook! 'prog-mode-hook
+;;    company-box-frame-top-margin 20)
+;;  (setq-hook! 'text-mode-hook
+;;    company-box-frame-top-margin 20)
+;;)
+
+;; Save with :w or :W for clumsy fingers
+(evil-ex-define-cmd "W" #'evil-write)
 
 
 ;;(add-to-list 'company-backends 'company-shell)
 
 ;;(add-hook! 'after-init-hook #'global-flycheck-mode)
 
-;; (setq lsp-disabled-clients '(tfls))
+;;(setq lsp-disabled-clients '(tfls))
 
-;; 'before save a file' hook
+;; 'before save a file' hooks
 (defun before-save-hook-custom ()
   (unless (eql (with-current-buffer (current-buffer) major-mode)
-               'markdown-mode)
+               'markdown-mode))
     (delete-trailing-whitespace)
     (doom/delete-trailing-newlines)
-    ))
+)
+
 (defun before-save-hook-puppet ()
-  (eql (with-current-buffer (current-buffer) major-mode
-                            'puppet-mode)
+  (eql (with-current-buffer (current-buffer) major-mode)
+       'puppet-mode)
        (delete-trailing-whitespace)
        (doom/delete-trailing-newlines)
-       (puppet-align-block)))
+       (puppet-align-block)
+)
+
 (defun before-save-hook-terraform ()
-  (eql (with-current-buffer (current-buffer) major-mode
-                            'terraform-mode)
-       (delete-trailing-whitespace)
-       (doom/delete-trailing-newlines)
-       (terraform-format-buffer)))
+  (when (eq major-mode 'terraform-mode)
+    (terraform-format-buffer))
+)
+
+(defun before-save-hook-go ()
+  (when (eq major-mode 'go-mode)
+    (gofmt))
+)
+
+;(add-hook! 'before-save-hook #'before-save-hook-puppet)
+(add-hook! 'before-save-hook #'before-save-hook-go)
 (add-hook! 'before-save-hook #'before-save-hook-custom)
-(add-hook! 'before-save-hook #'before-save-hook-custom)
-(add-hook! 'before-save-hook #'before-save-hook-puppet)
 (add-hook! 'before-save-hook #'before-save-hook-terraform)
 
 ;; Avoid unwanted semgrep warning
@@ -176,6 +189,10 @@
 ;; Display workspace name in modeline
 (after! doom-modeline
   (setq! doom-modeline-persp-name t))
+
+;; Show indicators in the left fringe
+(after! flycheck
+  (setq! flycheck-indication-mode 'left-fringe))
 
 ;; Activate clickable url in vterm
 (add-hook! 'vterm-mode-hook
