@@ -66,3 +66,4 @@
 (package! evil-tutor)
 (package! puppet-mode)
 (package! use-package-hydra)
+(package! popper)

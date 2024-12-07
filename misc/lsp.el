@@ -30,7 +30,7 @@
 
 (use-package lsp-mode
   ;; uncomment to enable gopls http debug server
-  ;; :custom (lsp-gopls-server-args '("-debug" "127.0.0.1:0"))
+  ;;:custom (lsp-gopls-server-args '("-debug" "10.236.34.237:30234))
   :commands (lsp lsp-deferred)
   :hook (go-mode . lsp-deferred)
   :config (progn
@@ -53,7 +53,7 @@
                                                 (useany . t)
                                                 (unusedvariable . t)))))
 
-;; Go debugger
+;; Debugger
 (use-package! dap-mode
   :config
   (dap-mode 1)
@@ -63,7 +63,10 @@
   (use-package! dap-ui
     :config
     (dap-ui-mode 1)
-  ))
+  )
+  :custom
+  (dap-auto-configure-features '(sessions locals tooltip expressions breakpoints))
+)
 
 ;; if you use company-mode for completion (otherwise, complete-at-point works out of the box):
 (use-package company-lsp
@@ -85,15 +88,38 @@
   (set-face-attribute 'dap-ui-verified-breakpoint-face nil :inherit 'dap-ui-pending-breakpoint-face)
 )
 
-;; Locals don't expand when doing dap-next, TODO debug
+
+;; Setting windows positions up
+(with-eval-after-load 'dap-ui
+  (treemacs)
+  (setq dap-ui-buffer-configurations
+    `(
+      (,dap-ui--breakpoints-buffer . ((side . left) (slot . 1) (window-width . ,treemacs-width)))
+      (,dap-ui--locals-buffer . ((side . right) (slot . 1) (window-width . 0.3)))
+      (,dap-ui--expressions-buffer . ((side . right) (slot . 2) (window-width . 0.3)))
+      (,dap-ui--debug-window-buffer . ((side . bottom) (slot . 1) (window-width . 0.20)))
+      (,dap-ui--repl-buffer . ((side . bottom) (slot . 2) (window-height . 0.2)))
+     )
+  )
+)
+
+;; Locals don't expand when doing dap-next, TODO make it work
 ;; (defun next-expand()
 ;;   (interactive)
 ;;   (dap-next (dap--cur-session))
-;;   (sleep-for 0.1)
-;;   (dap-ui-locals))
+;;   (sleep-for 1)
+;;   (dap-ui-locals)
+;; )
 (defun next-expand()
   (interactive)
-  (dap-next (dap--cur-session)))
+  (dap-next (dap--cur-session))
+)
+
+(defun dap-disconnect-custom()
+  (interactive)
+  (dap-disconnect (dap--cur-session))
+  (popper--bury-all)
+)
 
 ;; Shortcuts
 (global-set-key [f5]  #'dap-continue)
@@ -116,6 +142,6 @@
         :desc "Breakpoint hit condition"  "h" #'dap-breakpoint-hit-condition
         :desc "Breakpoint condition"      "k" #'dap-breakpoint-condition
         :desc "Breakpoint log message"    "i" #'dap-breakpoint-log-message
-        :desc "Disconnect"                "Q" #'dap-disconnect
+        :desc "Disconnect"                "Q" #'dap-disconnect-custom
       )
 )

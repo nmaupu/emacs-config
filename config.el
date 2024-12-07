@@ -206,10 +206,32 @@
       :map vterm-mode-map
       :ni "C-c" #'vterm--self-insert)
 
+;; popper is better popups
+(use-package! popper
+  :init
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "Output\\*$"
+          "\\*Async Shell Command\\*"
+          " log\\*$" ; dap console window
+          help-mode
+          compilation-mode))
+  (popper-mode +1)
+  (popper-echo-mode +1))
+(map! :nivem "C-p"  #'popper-toggle)
+(map! :nivem "M-p"  #'popper-cycle)
+(map! :nivem "C-M-p"  #'popper-toggle-type)
+;; Put the log message buffer at the bottom with a specific size
+(add-to-list 'display-buffer-alist '(" log\\*" display-buffer-at-bottom (window-height . 0.2) (slot -1)))
+(set-popup-rules!
+  '(
+    (" log\\*" :slot -1)
+   )
+)
 
 ;;
 ;; loading extra configurations
-(load! "lsp/lsp-go.el")
+(load! "misc/lsp.el")
 (load! "misc/todos.el")
 
 ;; TODO Debug
