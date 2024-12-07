@@ -70,9 +70,14 @@
   :after(company lsp-mode)
   :commands company-lsp)
 
+;; Locals vars are now visible and usable
 (after! dap-ui
   (setq! dap-ui-variable-length 200))
 
+;; Force refreshing treemacs panes
+(lsp-treemacs-sync-mode 1)
+
+;; Make debugger usable using emacs in console
 (unless (display-graphic-p)
   (set-face-background 'dap-ui-marker-face "color-166") ; An orange background for the line to execute
   (set-face-attribute 'dap-ui-marker-face nil :inherit nil) ; Do not inherit other styles
@@ -80,10 +85,20 @@
   (set-face-attribute 'dap-ui-verified-breakpoint-face nil :inherit 'dap-ui-pending-breakpoint-face)
 )
 
+;; Locals don't expand when doing dap-next, TODO debug
+;; (defun next-expand()
+;;   (interactive)
+;;   (dap-next (dap--cur-session))
+;;   (sleep-for 0.1)
+;;   (dap-ui-locals))
+(defun next-expand()
+  (interactive)
+  (dap-next (dap--cur-session)))
+
 ;; Shortcuts
 (global-set-key [f5]  #'dap-continue)
 (global-set-key [f9]  #'dap-breakpoint-toggle)
-(global-set-key [f10] #'dap-next)
+(global-set-key [f10] #'next-expand)
 (global-set-key [f11] #'dap-step-in)
 (global-set-key [f12] #'dap-step-out)
 
@@ -91,7 +106,7 @@
       (
         :prefix ("d" . "DAP debugger menu")
         :desc "Start a new debug session" "d" #'dap-debug
-        :desc "Next"                      "n" #'dap-next
+        :desc "Next"                      "n" #'next-expand
         :desc "Continue"                  "c" #'dap-continue
         :desc "Step In"                   "s" #'dap-step-in
         :desc "Step Out"                  "o" #'dap-step-out
