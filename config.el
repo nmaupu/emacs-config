@@ -82,16 +82,16 @@
 ;; they are implemented.
 
 ;; Move around windows
-(map! "C-<left>"  #'windmove-left)
-(map! "C-<right>" #'windmove-right)
-(map! "C-<up>"    #'windmove-up)
-(map! "C-<down>"  #'windmove-down)
+(map! :nivem "C-<left>"  #'windmove-left)
+(map! :nivem "C-<right>" #'windmove-right)
+(map! :nivem "C-<up>"    #'windmove-up)
+(map! :nivem "C-<down>"  #'windmove-down)
 
 ;; Resize windows
-(map! "C-S-<left>"  #'evil-window-decrease-width)
-(map! "C-S-<right>" #'evil-window-increase-width)
-(map! "C-S-<up>"    #'evil-window-increase-height)
-(map! "C-S-<down>"  #'evil-window-decrease-height)
+(map! :nivem "C-S-<left>"  #'evil-window-decrease-width)
+(map! :nivem "C-S-<right>" #'evil-window-increase-width)
+(map! :nivem "C-S-<up>"    #'evil-window-increase-height)
+(map! :nivem "C-S-<down>"  #'evil-window-decrease-height)
 
 (map! :nvm "-" 'dired-jump)
 
@@ -101,8 +101,8 @@
 ; next ws
 (map! "M-<right>" #'+workspace/switch-right)
 
-(when (display-graphic-p)
-  (require 'all-the-icons))
+;; (when (display-graphic-p)
+;;   (require 'all-the-icons))
 
 ;; Open the shortcut menu quicker
 (setq! which-key-idle-delay 0.3)
@@ -134,6 +134,7 @@
 
 ;; Save with :w or :W for clumsy fingers
 (evil-ex-define-cmd "W" #'evil-write)
+(evil-ex-define-cmd "X" #'evil-save-and-quit)
 
 
 ;;(add-to-list 'company-backends 'company-shell)
@@ -182,10 +183,6 @@
       t)) ;; Return t to indicate the notification is handled
   (advice-add 'lsp--on-notification :before-until #'ak-lsp-ignore-semgrep-rulesRefreshed))
 
-;(use-package use-package-hydra
-;  :defer t
-;  :ensure t)
-
 ;; Display workspace name in modeline
 (after! doom-modeline
   (setq! doom-modeline-persp-name t))
@@ -194,11 +191,26 @@
 (after! flycheck
   (setq! flycheck-indication-mode 'left-fringe))
 
+;;
+;; vterm related configurations
+
 ;; Activate clickable url in vterm
 (add-hook! 'vterm-mode-hook
   (goto-address-mode t))
 
+;; Get C-c and ESC key working
+(add-hook! 'vterm-mode-hook
+  (unless evil-collection-vterm-send-escape-to-vterm-p
+    (evil-collection-vterm-toggle-send-escape)))
+(map! :after vterm
+      :map vterm-mode-map
+      :ni "C-c" #'vterm--self-insert)
+
+
+;;
+;; loading extra configurations
 (load! "lsp/lsp-go.el")
+(load! "misc/todos.el")
 
 ;; TODO Debug
 ;; https://discourse.doomemacs.org/t/permanently-display-workspaces-in-the-tab-bar/4088

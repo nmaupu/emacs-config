@@ -70,6 +70,16 @@
   :after(company lsp-mode)
   :commands company-lsp)
 
+(after! dap-ui
+  (setq! dap-ui-variable-length 200))
+
+(unless (display-graphic-p)
+  (set-face-background 'dap-ui-marker-face "color-166") ; An orange background for the line to execute
+  (set-face-attribute 'dap-ui-marker-face nil :inherit nil) ; Do not inherit other styles
+  (set-face-background 'dap-ui-pending-breakpoint-face "blue") ; Blue background for breakpoints line
+  (set-face-attribute 'dap-ui-verified-breakpoint-face nil :inherit 'dap-ui-pending-breakpoint-face)
+)
+
 ;; Shortcuts
 (global-set-key [f5]  #'dap-continue)
 (global-set-key [f9]  #'dap-breakpoint-toggle)

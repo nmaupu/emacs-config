@@ -32,7 +32,7 @@
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
        ;;doom-dashboard    ; a nifty splash screen for Emacs
-       doom-quit         ; DOOM quit-message prompts when you quit Emacs
+       ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
        ;;(emoji +unicode)  ; 🙂
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;indent-guides     ; highlighted indent columns
@@ -53,9 +53,9 @@
        ;;zen               ; distraction-free coding or writing
 
        :editor
-       (evil +everywhere); come to the dark side, we have cookies
-       file-templates    ; auto-snippets for empty files
-       fold              ; (nigh) universal code folding
+       (evil +everywhere)  ; come to the dark side, we have cookies
+       file-templates      ; auto-snippets for empty files
+       fold                ; (nigh) universal code folding
        ;;(format +onsave)  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
@@ -63,22 +63,22 @@
        ;;objed             ; text object editing for the innocent
        ;;parinfer          ; turn lisp into python, sort of
        ;;rotate-text       ; cycle region at point between text candidates
-       snippets          ; my elves . They type so I don't have to
+       snippets            ; my elves . They type so I don't have to
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
        dired             ; making dired pretty [functional]
        electric          ; smarter, keyword-based electric-indent
-       ;;eww               ; the internet is gross
+       ;;eww             ; the internet is gross
        ibuffer           ; interactive buffer management
        undo              ; persistent, smarter undo for your inevitable mistakes
        vc                ; version-control and Emacs, sitting in a tree
 
        :term
-       eshell            ; the elisp shell that works everywhere
+       ;;eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
-       vterm             ; the best terminal emulation in Emacs
+       vterm               ; the best terminal emulation in Emacs
 
        :checkers
        syntax              ; tasing you for every semicolon you forget
@@ -89,22 +89,22 @@
        ;;ansible
        ;;biblio            ; Writes a PhD for you (citation needed)
        ;;collab            ; buffers with friends
-       (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
+       (debugger +lsp)     ; FIXME stepping through code, to help you add bugs
        ;;direnv
-       ;;docker
+       docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        lookup              ; navigate your code and its documentation
-       lsp               ; M-x vscode
-       magit             ; a git porcelain for Emacs
-       make              ; run make tasks from Emacs
-       pass              ; password manager for nerds
+       lsp                 ; M-x vscode
+       magit               ; a git porcelain for Emacs
+       make                ; run make tasks from Emacs
+       pass                ; password manager for nerds
        ;;pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
-       (terraform +lsp)         ; infrastructure as code
-       tmux              ; an API for interacting with tmux
-       tree-sitter       ; syntax and parsing, sitting in a tree . ..
+       (terraform +lsp)    ; infrastructure as code
+       tmux                ; an API for interacting with tmux
+       tree-sitter         ; syntax and parsing, sitting in a tree . ..
        ;;upload            ; map local to remote projects via ssh/ftp
 
        :os
@@ -114,15 +114,15 @@
        :lang
        ;;agda              ; types of types of types of types            . ..
        ;;beancount         ; mind the GAAP
-       (cc +lsp)         ; C > C++ == 1
+       ;;(cc +lsp)         ; C > C++ == 1
        ;;clojure           ; java with a lisp
-       common-lisp       ; if you've seen one lisp, you've seen them all
+       common-lisp         ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
-       data              ; config/data formats
+       data                ; config/data formats
        ;;(dart +flutter)   ; paint ui and not much else
-       ;;dhall
+       dhall
        ;;elixir            ; erlang done right
        ;;elm               ; care for a cup of TEA?
        emacs-lisp        ; drown in parentheses
