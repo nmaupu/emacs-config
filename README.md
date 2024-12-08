@@ -53,3 +53,11 @@ go install golang.org/x/tools/gopls@latest
 go install golangci-lint@latest
 go install github.com/go-delve/delve/cmd/dlv@latest
 ```
+
+
+# Cloning real config
+
+```
+rm -rf $HOME/.config/doom
+git clone git@github.com:nmaupu/emacs-config.git $HOME/.config/doom
+```
