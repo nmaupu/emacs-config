@@ -230,6 +230,11 @@
    )
 )
 
+;; Disabling buggy treemacs git mode
+(after! treemacs
+  (treemacs-git-mode -1)
+)
+
 ;;
 ;; loading extra configurations
 (load! "misc/lsp.el")
