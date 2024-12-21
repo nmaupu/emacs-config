@@ -56,14 +56,15 @@
 (package! hydra)
 (package! lsp-ui)
 (package! yasnippet)
+(package! dap-mode)
+(package! jsonnet-mode)
 
 ;; Misc packages
 (package! all-the-icons)
 (package! company-box)
 (package! company-terraform)
-(package! dap-mode)
 (package! disable-mouse)
-(package! evil-tutor)
 (package! puppet-mode)
 (package! use-package-hydra)
 (package! popper)
+;; (package! org-superstar)

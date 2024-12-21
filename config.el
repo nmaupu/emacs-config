@@ -37,6 +37,7 @@
       doom-variable-pitch-font (font-spec :family "CommitMono Nerd Font Mono" :size 17))
 ;; (setq doom-theme 'doom-monokai-pro)
 (setq doom-theme 'doom-palenight)
+(doom-themes-org-config)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -170,10 +171,16 @@
     (gofmt))
 )
 
+(defun before-save-hook-jsonnet ()
+  (when (eq major-mode 'jsonnet-mode)
+    (jsonnet-reformat-buffer))
+)
+
 ;(add-hook! 'before-save-hook #'before-save-hook-puppet)
 (add-hook! 'before-save-hook #'before-save-hook-go)
 (add-hook! 'before-save-hook #'before-save-hook-custom)
 (add-hook! 'before-save-hook #'before-save-hook-terraform)
+(add-hook! 'before-save-hook #'before-save-hook-jsonnet)
 
 ;; Avoid unwanted semgrep warning
 (after! lsp-mode
@@ -235,10 +242,20 @@
   (treemacs-git-mode -1)
 )
 
+(after! jsonnet-mode
+  (setq jsonnet-use-smie t)
+  (setq jsonnet-command "jsonnet")
+  ;; (setq jsonnet-library-search-directories (list (concat (projectile-project-root) "deploy/vendor")))
+  (setq jsonnet-library-search-directories '("vendor" "."))
+  (setq jsonnet-indent-level 2)
+)
+
 ;;
 ;; loading extra configurations
 (load! "misc/lsp.el")
 (load! "misc/todos.el")
+(load! "misc/jsonnet-language-server.el")
+;; (load! "misc/org.el")
 
 ;; TODO Debug
 ;; https://discourse.doomemacs.org/t/permanently-display-workspaces-in-the-tab-bar/4088
