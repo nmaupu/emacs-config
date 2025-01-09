@@ -95,6 +95,9 @@
 (map! :nivem "C-S-<up>"    #'evil-window-increase-height)
 (map! :nivem "C-S-<down>"  #'evil-window-decrease-height)
 
+; Save with C-s
+(map! :ni "C-s" #'save-buffer)
+
 (map! :nvm "-" 'dired-jump)
 
 ;; Navigate through workspaces
@@ -102,6 +105,9 @@
 (map! "M-<left>" #'+workspace/switch-left)
 ; next ws
 (map! "M-<right>" #'+workspace/switch-right)
+
+(map! :map dired-mode-map
+      :n "." #'dired-create-empty-file)
 
 ;; (when (display-graphic-p)
 ;;   (require 'all-the-icons))
@@ -241,12 +247,24 @@
 (after! treemacs
   (treemacs-git-mode -1)
 )
+;; Add a magit command to amend last commit and force push to the current branch
+(defun git-amend-force-push ()
+  "Git amend last commit and force push to pushremote"
+  (interactive)
+  (magit-stage-modified)
+  (magit-commit-extend)
+  (magit-push-current-to-pushremote "-f")
+  (magit-mode-quit-window t)
+)
+(map! :map magit-mode-map
+      :n "C-f" #'git-amend-force-push)
 
 (after! jsonnet-mode
   (setq jsonnet-use-smie t)
   (setq jsonnet-command "jsonnet")
   ;; (setq jsonnet-library-search-directories (list (concat (projectile-project-root) "deploy/vendor")))
-  (setq jsonnet-library-search-directories '("vendor" "."))
+  ;; (setq jsonnet-library-search-directories (append (list (concat (projectile-project-root) "deploy/vendor")) (list (concat (projectile-project-root) "deploy"))))
+  (setq jsonnet-library-search-directories '("/home/nmaupu/work/perso/gotomation/deploy/vendor" "/home/nmaupu/work/perso/gotomation/deploy"))
   (setq jsonnet-indent-level 2)
 )
 
