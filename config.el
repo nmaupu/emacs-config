@@ -236,9 +236,9 @@
           compilation-mode))
   (popper-mode +1)
   (popper-echo-mode +1))
-(map! :nivem "C-p"  #'popper-toggle)
-(map! :nivem "M-p"  #'popper-cycle)
-(map! :nivem "C-M-p"  #'popper-toggle-type)
+(map! :nivem "C-p"   #'popper-toggle)
+(map! :nivem "M-p"   #'popper-cycle)
+(map! :nivem "C-M-p" #'popper-toggle-type)
 ;; Put the log message buffer at the bottom with a specific size
 (add-to-list 'display-buffer-alist '(" log\\*" display-buffer-at-bottom (window-height . 0.2) (slot -1)))
 (set-popup-rules!
@@ -254,6 +254,7 @@
 ;; Add a magit command to amend last commit and force push to the current branch
 (defun git-amend-force-push ()
   "Git amend last commit and force push to pushremote"
+  (interactive)
   (magit-stage-modified)
   (magit-commit-extend)
   (magit-push-current-to-pushremote "-f")
@@ -261,7 +262,6 @@
 )
 (map! :map magit-mode-map
       :n "C-f" #'git-amend-force-push)
-
 
 (after! jsonnet-mode
   (setq jsonnet-use-smie t)
