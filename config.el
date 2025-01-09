@@ -109,8 +109,12 @@
 (map! :map dired-mode-map
       :n "." #'dired-create-empty-file)
 
+(map! :after evil
+      :mode dired-mode
+      :nv "u" #'dired-unmark)
+
 (map! :nv "C-d" (lambda()(interactive) (evil-scroll-down 0) (recenter)))
-(map! :nv "C-d" (lambda()(interactive) (evil-scroll-up 0)   (recenter)))
+(map! :nv "C-u" (lambda()(interactive) (evil-scroll-up 0)   (recenter)))
 
 ;; Open the shortcut menu quicker
 (setq! which-key-idle-delay 0.3)
