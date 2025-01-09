@@ -109,8 +109,8 @@
 (map! :map dired-mode-map
       :n "." #'dired-create-empty-file)
 
-;; (when (display-graphic-p)
-;;   (require 'all-the-icons))
+(map! :nv "C-d" (lambda()(interactive) (evil-scroll-down 0) (recenter)))
+(map! :nv "C-d" (lambda()(interactive) (evil-scroll-up 0)   (recenter)))
 
 ;; Open the shortcut menu quicker
 (setq! which-key-idle-delay 0.3)
@@ -250,7 +250,6 @@
 ;; Add a magit command to amend last commit and force push to the current branch
 (defun git-amend-force-push ()
   "Git amend last commit and force push to pushremote"
-  (interactive)
   (magit-stage-modified)
   (magit-commit-extend)
   (magit-push-current-to-pushremote "-f")
@@ -258,6 +257,7 @@
 )
 (map! :map magit-mode-map
       :n "C-f" #'git-amend-force-push)
+
 
 (after! jsonnet-mode
   (setq jsonnet-use-smie t)
