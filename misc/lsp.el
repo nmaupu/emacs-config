@@ -6,6 +6,9 @@
 
 ;; optional - provides fancy overlay information
 ;; https://ladicle.com/post/config/
+
+(setq! lsp-use-workspace-root-for-server-default-directory t)
+
 (use-package lsp-ui
   :after(lsp-mode)
   :commands lsp-ui-mode
@@ -39,6 +42,9 @@
             ;;(setq lsp-trace nil)
             (setq lsp-print-performance nil)
             (setq lsp-log-io nil)))
+
+(after! lsp-mode
+  (lsp-make-interactive-code-action organize-imports-ts "source.organizeImports.ts-ls"))
 
 ;; Make sure you don't have other goimports hooks enabled.
 ;; (add-hook 'go-mode-hook #'lsp-deferred)
