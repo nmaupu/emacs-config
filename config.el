@@ -117,6 +117,10 @@
 (map! :nv "C-d" (lambda()(interactive) (evil-scroll-down 0) (recenter)))
 (map! :nv "C-u" (lambda()(interactive) (evil-scroll-up 0)   (recenter)))
 
+;; Rebind C-c to copy to a specific register
+(map! :after evil
+      :v "C-c" #'copy-to-register)
+
 ;; Open the shortcut menu quicker
 (setq! which-key-idle-delay 0.3)
 
