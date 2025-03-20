@@ -137,7 +137,7 @@
 ;;             evil-visual-state-map
 ;;             evil-insert-state-map))
 
-(company-terraform-init)
+;; (company-terraform-init)
 
 ;;(add-hook 'company-mode-hook 'company-box-mode)
 ;;(use-package! company-box
@@ -315,6 +315,7 @@
 (load! "misc/lsp.el")
 (load! "misc/todos.el")
 (load! "misc/jsonnet-language-server.el")
+(load! "misc/prod-cli.el")
 ;; (load! "misc/org.el")
 
 ;; TODO Debug
