@@ -229,6 +229,10 @@
       :map vterm-mode-map
       :ni "C-c" #'vterm--self-insert)
 
+;; Replace vterm-toggle with vterm as toggling has weird display bug sometimes
+(map! :leader
+      :desc "Open vterm" "o t" #'vterm)
+
 ;; popper is better popups
 (use-package! popper
   :init
