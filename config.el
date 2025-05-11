@@ -325,3 +325,8 @@
 ;; TODO Debug
 ;; https://discourse.doomemacs.org/t/permanently-display-workspaces-in-the-tab-bar/4088
 ;;(load! "misc/ws.el")
+
+; gptel
+(gptel-make-gh-copilot "Copilot")
+(setq gptel-model 'gpt-4o
+      gptel-backend (gptel-make-gh-copilot "Copilot"))

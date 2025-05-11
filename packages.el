@@ -68,3 +68,6 @@
 (package! use-package-hydra)
 (package! popper)
 ;; (package! org-superstar)
+
+;; gptel (ai agent)
+(package! gptel :recipe (:nonrecursive t))
