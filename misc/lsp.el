@@ -151,3 +151,5 @@
         :desc "Disconnect"                "Q" #'dap-disconnect-custom
       )
 )
+
+(setq dap-dlv-go-extra-args "--only-same-user=false --log")
