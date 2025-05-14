@@ -168,14 +168,6 @@
     (doom/delete-trailing-newlines)
 )
 
-(defun before-save-hook-puppet ()
-  (eql (with-current-buffer (current-buffer) major-mode)
-       'puppet-mode)
-       (delete-trailing-whitespace)
-       (doom/delete-trailing-newlines)
-       (puppet-align-block)
-)
-
 (defun before-save-hook-terraform ()
   (when (eq major-mode 'terraform-mode)
     (terraform-format-buffer))
@@ -191,7 +183,6 @@
     (jsonnet-reformat-buffer))
 )
 
-;(add-hook! 'before-save-hook #'before-save-hook-puppet)
 (add-hook! 'before-save-hook #'before-save-hook-go)
 (add-hook! 'before-save-hook #'before-save-hook-custom)
 (add-hook! 'before-save-hook #'before-save-hook-terraform)
@@ -229,7 +220,7 @@
       :map vterm-mode-map
       :ni "C-c" #'vterm--self-insert)
 
-;; Replace vterm-toggle with vterm as toggling has weird display bug sometimes
+;; Replace 'vterm-toggle' with 'vterm' as toggling has weird display bug sometimes under Guix
 (map! :leader
       :desc "Open vterm" "o t" #'vterm)
 
@@ -320,7 +311,6 @@
 (load! "misc/todos.el")
 (load! "misc/jsonnet-language-server.el")
 (load! "misc/prod-cli.el")
-;; (load! "misc/org.el")
 
 ;; TODO Debug
 ;; https://discourse.doomemacs.org/t/permanently-display-workspaces-in-the-tab-bar/4088
@@ -330,3 +320,49 @@
 (gptel-make-gh-copilot "Copilot")
 (setq gptel-model 'gpt-4o
       gptel-backend (gptel-make-gh-copilot "Copilot"))
+
+; Fixing some highlight colors
+(after! lsp-mode
+  (custom-set-faces!
+    '(lsp-face-highlight-textual
+      :background "#ff79c6"
+      :foreground "#1e1e1e"
+      :weight bold)))
+
+(after! paren
+  (add-hook 'show-paren-mode-hook
+            (lambda ()
+              (when (facep 'show-paren-match)
+                (set-face-attribute 'show-paren-match nil
+                                    :foreground "#ffb6c1"
+                                    :background "#d94fe6"
+                                    :weight 'bold))))
+  (setq show-paren-style 'mixed))
+
+;; Enable clipboard access in terminal using xclip with yy
+(unless (display-graphic-p)
+  (setq x-select-enable-clipboard-manager t)
+  (setq interprogram-cut-function
+        (lambda (text &optional _)
+          (when text
+            (let ((process-connection-type nil))
+              (let ((proc (start-process "xclip" "*Messages*" "xclip" "-selection" "clipboard")))
+                (process-send-string proc text)
+                (process-send-eof proc))))))
+  (setq interprogram-paste-function
+        (lambda ()
+          (let ((xclip-output (shell-command-to-string "xclip -o -selection clipboard")))
+            (unless (string= (car kill-ring) xclip-output)
+              xclip-output)))))
+
+;;
+;; Force projectile to ignore home directory
+(after! projectile
+  (add-to-list 'projectile-ignored-projects "~/"))
+
+;; Remove the home dir if it was mistakenly added
+(after! lsp-mode
+  (add-hook! 'go-mode-hook
+    (when (member (expand-file-name "~") (lsp-session-folders (lsp-session)))
+      (lsp-workspace-folders-remove (expand-file-name "~"))
+      (lsp-workspace-folders-add (projectile-project-root)))))
