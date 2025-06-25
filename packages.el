@@ -71,3 +71,6 @@
 
 ;; gptel (ai agent)
 (package! gptel :recipe (:nonrecursive t))
+
+(package! nix-mode)
+(package! org-tree-slide)

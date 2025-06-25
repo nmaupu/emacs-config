@@ -37,7 +37,7 @@
       doom-variable-pitch-font (font-spec :family "CommitMono Nerd Font Mono" :size 17))
 ;; (setq doom-theme 'doom-monokai-pro)
 (setq doom-theme 'doom-palenight)
-(doom-themes-org-config)
+;; (doom-themes-org-config)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -48,8 +48,22 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 
-(setq show-trailing-whitespace t)
+(after! org
+  (setq org-startup-indented t      ; enables org-indent-mode automatically
+        org-hide-leading-stars t    ; hide extra stars before org-superstar runs
+        org-ellipsis " ▾"))         ; nicer folding arrow
+;; Remap <left> and <right> only for org-tree-slide-mode
+(map! :after org-tree-slide
+      :map org-tree-slide-mode-map
+      [remap evil-forward-char] #'org-tree-slide-move-next-tree)
+(map! :after org-tree-slide
+      :map org-tree-slide-mode-map
+      [remap evil-backward-char] #'org-tree-slide-move-previous-tree)
+(map! :after org-tree-slide
+      :map org-tree-slide-mode-map
+      [remap evil-record-macro] #'org-tree-slide-mode)
 
+(setq show-trailing-whitespace t)
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -366,3 +380,17 @@
     (when (member (expand-file-name "~") (lsp-session-folders (lsp-session)))
       (lsp-workspace-folders-remove (expand-file-name "~"))
       (lsp-workspace-folders-add (projectile-project-root)))))
+
+;; lsp nix
+(after! lsp-mode
+  (use-package! lsp-nix
+    :ensure lsp-mode
+    :after (lsp-mode)
+    :demand t
+    :custom
+    (lsp-nix-nil-formatter ["nixfmt"])))
+
+(after! lsp-mode
+  (use-package! nix-mode
+    :hook (nix-mode . lsp-deferred)
+    :ensure t))
