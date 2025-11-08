@@ -51,8 +51,7 @@
 ;; (defun lsp-go-install-save-hooks ()
 ;;   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-ho(after! lsp-mode
-                       (setq  lsp-go-analyses '((fieldalignment . t)
-                                                (nilness . t)
+                       (setq  lsp-go-analyses '((nilness . t)
                                                 (shadow . t)
                                                 (unusedparams . t)
                                                 (unusedwrite . t)

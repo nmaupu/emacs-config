@@ -64,7 +64,7 @@
 (package! company-box)
 (package! company-terraform)
 (package! disable-mouse)
-(package! puppet-mode)
+;(package! puppet-mode)
 (package! use-package-hydra)
 (package! popper)
 ;; (package! org-superstar)
@@ -74,3 +74,4 @@
 
 (package! nix-mode)
 (package! org-tree-slide)
+(package! visual-fill-column)

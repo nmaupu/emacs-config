@@ -39,29 +39,18 @@
 (setq doom-theme 'doom-palenight)
 ;; (doom-themes-org-config)
 
+;; (defun x:emacs-recompile ()
+;;   "Recompile all .elc files."
+;;   (interactive)
+;;   (message "Recompiling ...")
+;;   (if (functionp 'async-byte-recompile-directory)
+;;       (async-byte-recompile-directory package-user-dir)
+;;     (byte-recompile-directory package-user-dir 0 'force)))
+
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 ;;(setq display-line-numbers-type t)
 (setq display-line-numbers-type 'relative)
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-
-(after! org
-  (setq org-startup-indented t      ; enables org-indent-mode automatically
-        org-hide-leading-stars t    ; hide extra stars before org-superstar runs
-        org-ellipsis " ▾"))         ; nicer folding arrow
-;; Remap <left> and <right> only for org-tree-slide-mode
-(map! :after org-tree-slide
-      :map org-tree-slide-mode-map
-      [remap evil-forward-char] #'org-tree-slide-move-next-tree)
-(map! :after org-tree-slide
-      :map org-tree-slide-mode-map
-      [remap evil-backward-char] #'org-tree-slide-move-previous-tree)
-(map! :after org-tree-slide
-      :map org-tree-slide-mode-map
-      [remap evil-record-macro] #'org-tree-slide-mode)
 
 (setq show-trailing-whitespace t)
 
@@ -202,14 +191,6 @@
 (add-hook! 'before-save-hook #'before-save-hook-terraform)
 (add-hook! 'before-save-hook #'before-save-hook-jsonnet)
 
-;; Avoid unwanted semgrep warning
-(after! lsp-mode
-  (defun ak-lsp-ignore-semgrep-rulesRefreshed (workspace notification)
-    "Ignore semgrep/rulesRefreshed notification."
-    (when (equal (gethash "method" notification) "semgrep/rulesRefreshed")
-      (lsp--info "Ignored semgrep/rulesRefreshed notification")
-      t)) ;; Return t to indicate the notification is handled
-  (advice-add 'lsp--on-notification :before-until #'ak-lsp-ignore-semgrep-rulesRefreshed))
 
 ;; Display workspace name in modeline
 (after! doom-modeline
@@ -324,7 +305,8 @@
 (load! "misc/lsp.el")
 (load! "misc/todos.el")
 (load! "misc/jsonnet-language-server.el")
-(load! "misc/prod-cli.el")
+(load! "misc/bazel.el")
+(load! "misc/org.el")
 
 ;; TODO Debug
 ;; https://discourse.doomemacs.org/t/permanently-display-workspaces-in-the-tab-bar/4088
@@ -334,14 +316,6 @@
 (gptel-make-gh-copilot "Copilot")
 (setq gptel-model 'gpt-4o
       gptel-backend (gptel-make-gh-copilot "Copilot"))
-
-; Fixing some highlight colors
-(after! lsp-mode
-  (custom-set-faces!
-    '(lsp-face-highlight-textual
-      :background "#ff79c6"
-      :foreground "#1e1e1e"
-      :weight bold)))
 
 (after! paren
   (add-hook 'show-paren-mode-hook
@@ -394,3 +368,24 @@
   (use-package! nix-mode
     :hook (nix-mode . lsp-deferred)
     :ensure t))
+
+; Fixing some highlight colors
+(after! lsp-mode
+  (custom-set-faces!
+    '(lsp-face-highlight-textual
+      :background "#ff79c6"
+      :foreground "#1e1e1e"
+      :weight bold)))
+
+;; Avoid unwanted semgrep warning
+(after! lsp-mode
+  (defun ak-lsp-ignore-semgrep-rulesRefreshed (_workspace notification)
+    "Ignore semgrep/rulesRefreshed notification (works with plist or hash-table)."
+    (let ((method (cond
+                   ((hash-table-p notification) (gethash "method" notification))
+                   ((plistp notification)       (plist-get notification :method))
+                   (t                            nil))))
+      (when (equal method "semgrep/rulesRefreshed")
+        (lsp--info "Ignored semgrep/rulesRefreshed notification")
+        t))) ;; returning non-nil makes `:before-until` stop the chain
+(advice-add 'lsp--on-notification :before-until #'ak-lsp-ignore-semgrep-rulesRefreshed))
