@@ -75,3 +75,5 @@
 (package! nix-mode)
 (package! org-tree-slide)
 (package! visual-fill-column)
+
+(package! geiser-guile)
