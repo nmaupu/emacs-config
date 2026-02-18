@@ -18,7 +18,11 @@
             ;; showing docs on hover at the top of the window
             (setq lsp-ui-doc-enable t)
             (setq lsp-ui-imenu-enable t)
-            (setq lsp-ui-imenu-kind-position 'top)))
+            (setq lsp-ui-imenu-kind-position 'top)
+            ;; Enable signature help popup
+            (setq lsp-ui-signature-enable t)
+            (setq lsp-ui-signature-auto-activate t)
+            (setq lsp-ui-signature-render-documentation t)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -41,7 +45,12 @@
             (setq lsp-prefer-flymake nil)
             ;;(setq lsp-trace nil)
             (setq lsp-print-performance nil)
-            (setq lsp-log-io nil)))
+            (setq lsp-log-io nil)
+            ;; Disable snippet expansion - we want signature help instead
+            (setq lsp-enable-snippet nil)
+            ;; Enable signature help to show function parameters
+            (setq lsp-signature-auto-activate t)
+            (setq lsp-signature-render-documentation t)))
 
 (after! lsp-mode
   (lsp-make-interactive-code-action organize-imports-ts "source.organizeImports.ts-ls"))
@@ -50,13 +59,13 @@
 ;; (add-hook 'go-mode-hook #'lsp-deferred)
 ;; (defun lsp-go-install-save-hooks ()
 ;;   (add-hook 'before-save-hook #'lsp-organize-imports t t))
-(add-hook 'go-mode-ho(after! lsp-mode
-                       (setq  lsp-go-analyses '((nilness . t)
-                                                (shadow . t)
-                                                (unusedparams . t)
-                                                (unusedwrite . t)
-                                                (useany . t)
-                                                (unusedvariable . t)))))
+(after! lsp-mode
+  (setq lsp-go-analyses '((nilness . t)
+                          (shadow . t)
+                          (unusedparams . t)
+                          (unusedwrite . t)
+                          (useany . t)
+                          (unusedvariable . t))))
 
 ;; Debugger
 (use-package! dap-mode
@@ -72,11 +81,6 @@
   :custom
   (dap-auto-configure-features '(sessions locals tooltip expressions breakpoints))
 )
-
-;; if you use company-mode for completion (otherwise, complete-at-point works out of the box):
-(use-package company-lsp
-  :after(company lsp-mode)
-  :commands company-lsp)
 
 ;; Locals vars are now visible and usable
 (after! dap-ui
