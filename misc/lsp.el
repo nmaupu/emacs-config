@@ -8,9 +8,10 @@
 ;; https://ladicle.com/post/config/
 
 (setq! lsp-use-workspace-root-for-server-default-directory t)
+(setq! lsp-auto-guess-root t)
 
-(use-package lsp-ui
-  :after(lsp-mode)
+(use-package! lsp-ui
+  :after (lsp-mode)
   :commands lsp-ui-mode
   :config (progn
             ;; inline documentation
@@ -24,18 +25,8 @@
             (setq lsp-ui-signature-auto-activate t)
             (setq lsp-ui-signature-render-documentation t)))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(inhibit-startup-screen t)
- '(lsp-ui-imenu-enable t)
- '(package-selected-packages
-   '(treemacs dap-mode flycheck-golangci-lint projectile flx-ido yasnippet use-package lsp-ui go-mode flycheck company-lsp))
- '(tool-bar-mode nil))
 
-(use-package lsp-mode
+(use-package! lsp-mode
   ;; uncomment to enable gopls http debug server
   ;;:custom (lsp-gopls-server-args '("-debug" "10.236.34.237:30234))
   :commands (lsp lsp-deferred)
@@ -87,7 +78,8 @@
   (setq! dap-ui-variable-length 200))
 
 ;; Force refreshing treemacs panes
-(lsp-treemacs-sync-mode 1)
+(after! lsp-treemacs
+  (lsp-treemacs-sync-mode 1))
 
 ;; Make debugger usable using emacs in console
 (unless (display-graphic-p)
@@ -100,7 +92,6 @@
 
 ;; Setting windows positions up
 (with-eval-after-load 'dap-ui
-  (treemacs)
   (setq dap-ui-buffer-configurations
     `(
       (,dap-ui--breakpoints-buffer . ((side . left) (slot . 1) (window-width . ,treemacs-width)))

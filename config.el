@@ -350,10 +350,8 @@
 
 ;; Remove the home dir if it was mistakenly added
 (after! lsp-mode
-  (add-hook! 'go-mode-hook
-    (when (member (expand-file-name "~") (lsp-session-folders (lsp-session)))
-      (lsp-workspace-folders-remove (expand-file-name "~"))
-      (lsp-workspace-folders-add (projectile-project-root)))))
+  (lsp-workspace-folders-remove (expand-file-name "~"))
+  (setq lsp-project-blacklist (list (expand-file-name "~"))))
 
 ;; lsp nix
 (after! lsp-mode
