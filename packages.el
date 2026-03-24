@@ -76,4 +76,5 @@
 (package! org-tree-slide)
 (package! visual-fill-column)
 
+(package! geiser)
 (package! geiser-guile)
