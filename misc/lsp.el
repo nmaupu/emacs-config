@@ -39,6 +39,8 @@
             (setq lsp-log-io nil)
             ;; Disable snippet expansion - we want signature help instead
             (setq lsp-enable-snippet nil)
+            ;; Disable on-type formatting to avoid double-indent with go-ts-mode
+            (setq lsp-enable-on-type-formatting nil)
             ;; Enable signature help to show function parameters
             (setq lsp-signature-auto-activate t)
             (setq lsp-signature-render-documentation t)))

@@ -177,8 +177,8 @@
 )
 
 (defun before-save-hook-go ()
-  (when (eq major-mode 'go-mode)
-    (gofmt))
+  (when (derived-mode-p 'go-mode 'go-ts-mode)
+    (lsp-format-buffer))
 )
 
 (defun before-save-hook-jsonnet ()
