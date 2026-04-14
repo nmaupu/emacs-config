@@ -69,8 +69,10 @@
 (package! popper)
 ;; (package! org-superstar)
 
-;; gptel (ai agent)
-(package! gptel :recipe (:nonrecursive t))
+;; claude-code.el (AI coding agent)
+(package! eat)
+(package! inheritenv)
+(package! claude-code :recipe (:host github :repo "stevemolitor/claude-code.el" :files ("*.el")))
 
 (package! nix-mode)
 (package! org-tree-slide)

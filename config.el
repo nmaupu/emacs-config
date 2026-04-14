@@ -211,6 +211,7 @@
 (add-hook! 'vterm-mode-hook
   (unless evil-collection-vterm-send-escape-to-vterm-p
     (evil-collection-vterm-toggle-send-escape)))
+
 (map! :after vterm
       :map vterm-mode-map
       :ni "C-c" #'vterm--self-insert)
@@ -312,10 +313,39 @@
 ;; https://discourse.doomemacs.org/t/permanently-display-workspaces-in-the-tab-bar/4088
 ;;(load! "misc/ws.el")
 
-; gptel
-(gptel-make-gh-copilot "Copilot")
-(setq gptel-model 'gpt-4o
-      gptel-backend (gptel-make-gh-copilot "Copilot"))
+; claude-code.el - Claude Code CLI integration
+(use-package! claude-code
+  :config
+  (setq claude-code-terminal-backend 'eat)
+  (map! :leader
+        (:prefix ("v" . "claude")
+         :desc "Slash commands"          "/" #'claude-code-slash-commands
+         :desc "Start Claude"            "c" #'claude-code
+         :desc "Continue conversation"   "C" #'claude-code-continue
+         :desc "Start Claude in dir"     "d" #'claude-code-start-in-directory
+         :desc "Send command"            "s" #'claude-code-send-command
+         :desc "Send region"             "r" #'claude-code-send-region
+         :desc "Fix error at point"      "e" #'claude-code-fix-error-at-point
+         :desc "Toggle window"           "t" #'claude-code-toggle
+         :desc "New instance"            "i" #'claude-code-new-instance
+         :desc "Switch buffer"           "b" #'claude-code-switch-to-buffer
+         :desc "Select from all buffers" "B" #'claude-code-select-buffer
+         :desc "Kill session"            "k" #'claude-code-kill
+         :desc "Kill all sessions"       "K" #'claude-code-kill-all
+         :desc "Menu"                    "m" #'claude-code-transient))
+  ))
+
+;; eat--set-cursor :invisible is called every time Claude Code CLI sends \e[?25l
+;; (which it does continuously during rendering). Intercept it to keep a visible
+;; bar cursor in claude buffers. Must be top-level after! eat, not nested.
+(after! eat
+  (advice-add #'eat--set-cursor :around
+    (lambda (orig terminal state)
+      (funcall orig terminal
+               (if (and (string-prefix-p "*claude" (buffer-name))
+                        (eq state :invisible))
+                   :bar
+                 state)))))
 
 (after! paren
   (add-hook 'show-paren-mode-hook
