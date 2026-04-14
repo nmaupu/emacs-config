@@ -332,8 +332,7 @@
          :desc "Select from all buffers" "B" #'claude-code-select-buffer
          :desc "Kill session"            "k" #'claude-code-kill
          :desc "Kill all sessions"       "K" #'claude-code-kill-all
-         :desc "Menu"                    "m" #'claude-code-transient))
-  ))
+         :desc "Menu"                    "m" #'claude-code-transient)))
 
 ;; eat--set-cursor :invisible is called every time Claude Code CLI sends \e[?25l
 ;; (which it does continuously during rendering). Intercept it to keep a visible
@@ -417,3 +416,7 @@
         (lsp--info "Ignored semgrep/rulesRefreshed notification")
         t))) ;; returning non-nil makes `:before-until` stop the chain
 (advice-add 'lsp--on-notification :before-until #'ak-lsp-ignore-semgrep-rulesRefreshed))
+
+(setq evil-search-module 'evil-search)
+(custom-set-faces!
+    '(lazy-highlight :background "color-226" :foreground "black"))
