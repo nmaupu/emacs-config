@@ -4,7 +4,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("5f128efd37c6a87cd4ad8e8b7f2afaba425425524a68133ac0efd87291d05874" default))
+   '("3061706fa92759264751c64950df09b285e3a2d3a9db771e99bcbb2f9b470037"
+     "5f128efd37c6a87cd4ad8e8b7f2afaba425425524a68133ac0efd87291d05874" default))
  '(inhibit-startup-screen t)
  '(lsp-ui-imenu-enable t)
  '(package-selected-packages
