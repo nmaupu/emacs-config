@@ -9,7 +9,7 @@
 
 ;;; TODO workflow
 ;; - STRT          -> appends today's <date> to the heading (unless it already has one)
-;; - DONE/KILL     -> appends <date> (or " -> <date>" if a date is already there)
+;; - DONE/KILL     -> appends <date> (or " <date>" if a date is already there)
 ;; - ARCHIVE       -> same as DONE, then moves the subtree to TODO-old.org
 ;; - SPC m s D     -> archives every DONE/KILL entry of the file at once
 (defvar my/org-stamped-done-states '("DONE" "KILL" "ARCHIVE")
@@ -29,7 +29,7 @@
 (defun my/org-stamp-heading (done)
   "Append today's active timestamp to the current heading title.
 When DONE is nil (task started), only stamp if the title has no date yet.
-When DONE is non-nil, stamp `<today>', or ` -> <today>' if the title
+When DONE is non-nil, stamp `<today>', or ` <today>' if the title
 already has a date.  Never stamp twice the same day."
   (save-excursion
     (org-back-to-heading t)
@@ -40,7 +40,7 @@ already has a date.  Never stamp twice the same day."
         (cond ((string-search today title) nil)
               ((not (string-match-p org-ts-regexp title))
                (goto-char end) (insert today))
-              (done (goto-char end) (insert " -> " today)))))))
+              (done (goto-char end) (insert " " today)))))))
 
 (defun my/org-archive-at (marker)
   "Turn the ARCHIVE heading at MARKER into DONE and archive its subtree."
