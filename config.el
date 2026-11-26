@@ -228,6 +228,7 @@
           "Output\\*$"
           "\\*Async Shell Command\\*"
           " log\\*$" ; dap console window
+          "^TODO\\.org$" ; ~/org/TODO.org (placement: misc/org-daily.el)
           help-mode
           compilation-mode))
   (popper-mode +1)
@@ -308,6 +309,7 @@
 (load! "misc/jsonnet-language-server.el")
 (load! "misc/bazel.el")
 (load! "misc/org.el")
+(load! "misc/org-daily.el")
 
 ;; TODO Debug
 ;; https://discourse.doomemacs.org/t/permanently-display-workspaces-in-the-tab-bar/4088

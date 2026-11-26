@@ -26,8 +26,8 @@
   (setq org-archive-save-context-info nil ; no :ARCHIVE_TIME: etc. properties
         org-archive-reversed-order t))    ; newest archived entries on top
 
-(defun my/org-stamp-heading (done)
-  "Append today's active timestamp to the current heading title.
+(defun my/org-stamp-heading (done &optional time)
+  "Append today's (or TIME's) active timestamp to the current heading title.
 When DONE is nil (task started), only stamp if the title has no date yet.
 When DONE is non-nil, stamp `<today>', or ` <today>' if the title
 already has a date.  Never stamp twice the same day."
@@ -36,7 +36,7 @@ already has a date.  Never stamp twice the same day."
     (when (and (looking-at org-complex-heading-regexp) (match-end 4))
       (let ((title (match-string-no-properties 4))
             (end (match-end 4))
-            (today (format-time-string "<%Y-%m-%d %a>")))
+            (today (format-time-string "<%Y-%m-%d %a>" time)))
         (cond ((string-search today title) nil)
               ((not (string-match-p org-ts-regexp title))
                (goto-char end) (insert today))
